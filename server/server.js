@@ -14,11 +14,26 @@ async function startServer() {
     dataSources: () => {
       launchAPI: new LaunchAPI()
     },
-    resolvers,});
+    resolvers,
+  });
 
   const app = new Hapi.server({
     port: PORT,
-    host: HOST
+    host: HOST,
+  });
+
+  app.route({
+    method: 'OPTIONS',
+    path: '/graphql',
+    config: {
+      handler: (request, h) => {
+        return h
+          .response()
+          .header('Access-Control-Allow-Methods', 'POST')
+          .header('Access-Control-Allow-Origin', '*')
+          .header('Access-Control-Allow-Headers', 'Content-Type');
+      }
+    }
   });
 
   await server.applyMiddleware({
