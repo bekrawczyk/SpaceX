@@ -1,43 +1,38 @@
-'use strict';
-
+// import { ApolloServer } from 'apollo-server-hapi';
 const Hapi = require('@hapi/hapi');
-const graphqlHapi = require('apollo-server-hapi');
+const { ApolloServer } = require('apollo-server-hapi');
+const resolvers = require('./resolvers');
+const typeDefs = require('./schema');
 const LaunchAPI = require('./datasources/launch');
 
-const resolvers = require('./resolvers');
-const schema = require('./schema');
-
 const HOST = 'localhost';
-const PORT = 3000;
+const PORT = 5000;
 
-async function StartServer() {
-  const server = new Hapi.server({
-    host: HOST,
-    port: PORT,
-    
-  });
-
-  await server.register({
-    plugin: graphqlHapi,
-    options: {
-      path: '/graphql',
-      graphqlOptions: {
-        schema: schema,
-        resolvers: resolvers,
-      },
-      route: {
-        cors: true,
-      },
+async function startServer() {
+  const server = new ApolloServer({ 
+    typeDefs,  
+    dataSources: () => {
+      launchAPI: new LaunchAPI()
     },
+    resolvers,});
+
+  const app = new Hapi.server({
+    port: PORT,
+    host: HOST
   });
+
+  await server.applyMiddleware({
+    app,
+  });
+
+  await server.installSubscriptionHandlers(app.listener);
 
   try {
-    await server.start();
+      await app.start();
   } catch (err) {
-    console.log(`Error while starting server: ${err.message}`);
+      console.log(`Error while starting server: ${err.message}`);
   }
-
-  console.log(`Server running at: ${server.info.uri}`);
+      console.log(`Server running at localhost, port: ${app.info.port}`);
 }
 
-StartServer();
+startServer();
