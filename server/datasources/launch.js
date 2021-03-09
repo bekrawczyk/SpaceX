@@ -15,9 +15,9 @@ class LaunchAPI extends RESTDataSource {
 
   launchReducer(launch) {
     return {
-      id: launch.id || 0,
+      id: launch.id,
       name: launch.name,
-      mission_name: launch.mission_name,
+      details: launch.details,
     };
   }
 }

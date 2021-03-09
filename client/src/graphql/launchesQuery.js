@@ -5,7 +5,7 @@ export const GET_LAUNCHES = gql`
             launches  {
                 id
                 name
-                mission_name
+                details
               }
         }
     `;
