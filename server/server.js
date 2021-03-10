@@ -1,4 +1,3 @@
-// import { ApolloServer } from 'apollo-server-hapi';
 const Hapi = require('@hapi/hapi');
 const { ApolloServer } = require('apollo-server-hapi');
 const resolvers = require('./resolvers');
@@ -10,11 +9,13 @@ const PORT = 5000;
 
 async function startServer() {
   const server = new ApolloServer({ 
-    typeDefs,  
+    typeDefs,
+    resolvers,  
     dataSources: () => {
-      launchAPI: new LaunchAPI()
+      return {
+        launchAPI: new LaunchAPI()
+      }
     },
-    resolvers,
   });
 
   const app = new Hapi.server({
