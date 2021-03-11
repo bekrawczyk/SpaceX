@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 
 export default function Home() {
     const { loading, error, data } = useQuery(GET_LAUNCHES);
+    console.log(error)
     if (loading) {
         return (
             <p>Loading...</p>
@@ -18,10 +19,12 @@ export default function Home() {
 
     return(
         <>
-            <h1>Upcomming Launches</h1>
+            <h1>Upcomming Launches:</h1>
             <ul>
                 {data && data.launches.map( item => (
-                    <li>{item.name}</li>
+                    <li key={item.id}>
+                        {item.name}
+                    </li>
                 ))}
             </ul>
         </>

@@ -1,11 +1,18 @@
 const Hapi = require('@hapi/hapi');
 const { ApolloServer } = require('apollo-server-hapi');
+const {MongoClient} = require('mongodb');
+
+const mongoose = require('mongoose');
+const { MONGODB } = require('./config');
+const Launches = require('./datasources/launches');
 const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
-const LaunchAPI = require('./datasources/launch');
 
 const HOST = 'localhost';
 const PORT = 5000;
+
+const client = new MongoClient(MONGODB)
+client.connect()
 
 async function startServer() {
   const server = new ApolloServer({ 
@@ -13,7 +20,7 @@ async function startServer() {
     resolvers,  
     dataSources: () => {
       return {
-        launchAPI: new LaunchAPI()
+        launches: new Launches(client.db('spacex').collection('launches'))
       }
     },
   });

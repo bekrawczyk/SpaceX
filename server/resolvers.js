@@ -1,6 +1,7 @@
 module.exports = {
     Query: {
-      launches: (_, __, { dataSources }) =>
-        dataSources.launchAPI.getAllLaunches(),
+      launches: async (_, __, { dataSources }) => {
+        return dataSources.launches.getAllLaunches()
+      }
     }
   };

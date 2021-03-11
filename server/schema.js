@@ -4,7 +4,7 @@ const schema = gql`
     type Launch {
         id: ID!
         name: String!
-        details: String!
+        details: String
     },
 
     type Query {

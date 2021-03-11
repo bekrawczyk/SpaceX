@@ -11,11 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/hapi": "^20.1.0",
+    "apollo-datasource-mongodb": "^0.3.0",
     "apollo-datasource-rest": "^0.10.0",
     "apollo-server": "^2.21.1",
     "apollo-server-hapi": "^2.21.1",
     "axios": "^0.21.1",
-    "graphql": "^15.5.0"
+    "graphql": "^15.5.0",
+    "mongoose": "^5.11.19"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
