@@ -1,8 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const { ApolloServer } = require('apollo-server-hapi');
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-const mongoose = require('mongoose');
 const { MONGODB } = require('./config');
 const Launches = require('./datasources/launches');
 const resolvers = require('./resolvers');
@@ -11,7 +10,7 @@ const typeDefs = require('./schema');
 const HOST = 'localhost';
 const PORT = 5000;
 
-const client = new MongoClient(MONGODB)
+const client = new MongoClient(MONGODB,  { useUnifiedTopology: true })
 client.connect()
 
 async function startServer() {
@@ -20,7 +19,7 @@ async function startServer() {
     resolvers,  
     dataSources: () => {
       return {
-        launches: new Launches(client.db('spacex').collection('launches'))
+        allLaunches: Launches(client.db().collection('launches'))
       }
     },
   });
@@ -48,7 +47,7 @@ async function startServer() {
     app,
   });
 
-  await server.installSubscriptionHandlers(app.listener);
+  server.installSubscriptionHandlers(app.listener);
 
   try {
       await app.start();

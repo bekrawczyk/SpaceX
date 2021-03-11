@@ -1,7 +1,12 @@
 module.exports = {
     Query: {
-      launches: async (_, __, { dataSources }) => {
-        return dataSources.launches.getAllLaunches()
+      getAllLaunches: async (_, __, { dataSources: {allLaunches} }) => {
+        try {
+          const launches = await allLaunches.getAllLaunches();
+          return launches
+        } catch(err){
+          throw new Error(err)
+        }
       }
     }
   };

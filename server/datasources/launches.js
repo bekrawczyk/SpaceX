@@ -1,8 +1,14 @@
-const { MongoDataSource } = require('apollo-datasource-mongodb');
 
-class Launches extends MongoDataSource {
-  async getAllLaunches() {
-    return launches;
+const Launches = (mongoDbConnection) =>  {
+  async function getAllLaunches() {
+    const launchesArray =  await mongoDbConnection.find().toArray();
+    return Array.isArray(launchesArray) 
+      ? launchesArray
+      : [];
+  }
+
+  return {
+    getAllLaunches,
   }
 }
 

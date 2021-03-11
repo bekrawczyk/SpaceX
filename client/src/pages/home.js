@@ -1,10 +1,10 @@
 import React from 'react';
-import { GET_LAUNCHES } from '../graphql/launchesQuery';
+import { GET_ALL_LAUNCHES } from '../graphql/launchesQuery';
 import { useQuery } from '@apollo/client';
 
 export default function Home() {
-    const { loading, error, data } = useQuery(GET_LAUNCHES);
-    console.log(error)
+    const { loading, error, data } = useQuery(GET_ALL_LAUNCHES);
+
     if (loading) {
         return (
             <p>Loading...</p>
@@ -19,9 +19,9 @@ export default function Home() {
 
     return(
         <>
-            <h1>Upcomming Launches:</h1>
+            <h1>All Launches:</h1>
             <ul>
-                {data && data.launches.map( item => (
+                {data && data.getAllLaunches.map( item => (
                     <li key={item.id}>
                         {item.name}
                     </li>

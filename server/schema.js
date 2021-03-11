@@ -2,13 +2,13 @@ const { gql } = require('apollo-server');
 
 const schema = gql`
     type Launch {
-        id: ID!
+        id: String!
         name: String!
         details: String
     },
 
     type Query {
-        launches: [Launch]!
+        getAllLaunches: [Launch]!
     },
 `;
 
