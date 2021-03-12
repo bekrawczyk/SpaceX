@@ -2,9 +2,13 @@ const { gql } = require('apollo-server');
 
 const schema = gql`
     type Launch {
+        date_utc: String!
+        details: String
+        flight_number: Int!
         id: String!
         name: String!
-        details: String
+        success: Boolean
+        upcoming: Boolean!
     },
 
     type Query {

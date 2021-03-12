@@ -2,6 +2,8 @@ import React from 'react';
 import { GET_ALL_LAUNCHES } from '../graphql/launchesQuery';
 import { useQuery } from '@apollo/client';
 
+import Table from './components/table/table';
+
 export default function Home() {
     const { loading, error, data } = useQuery(GET_ALL_LAUNCHES);
 
@@ -19,14 +21,13 @@ export default function Home() {
 
     return(
         <>
-            <h1>All Launches:</h1>
-            <ul>
-                {data && data.getAllLaunches.map( item => (
-                    <li key={item.id}>
-                        {item.name}
-                    </li>
-                ))}
-            </ul>
+            <h1>Launches Page:</h1>
+            {
+                data 
+                ? <Table launches={data}/> 
+                : <p>No data to display</p>
+            }
+
         </>
     );
 }

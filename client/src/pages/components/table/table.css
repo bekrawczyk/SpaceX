@@ -1,0 +1,30 @@
+.table-container {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+table th,
+table td {
+    text-align: left;
+}
+
+table.layout {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.display th,
+table.display td {
+    border: 1px solid #36E3DC;
+    padding: 5px 10px;
+}
+
+table.display th { 
+    background: #159692; 
+}
+
+table.display td { 
+    background: #fff; 
+}
+
+  
