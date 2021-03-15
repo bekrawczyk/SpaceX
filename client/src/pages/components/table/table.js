@@ -5,7 +5,6 @@ import './table.css';
 
 export default function Table(props) {
     const {launches} = props;
-    console.log(launches.getAllLaunches)
     return (
         <>
             <section className="table-container">
