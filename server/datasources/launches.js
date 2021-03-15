@@ -7,11 +7,16 @@ const Launches = (mongoDbConnection) =>  {
       : [];
   }
 
-  async function editLaunch() {
+  async function editLaunch(id, input) {
     const updatedLaunch = await mongoDbConnection.findOneAndUpdate(
-      id,
-      { input },
-      { new: true }
+      { id: id },
+      { $set: {
+        "details": input.details, 
+        "flight_number": input.flight_number,
+        "name": input.name,
+        "success": input.success,
+        "upcoming": input.upcoming,
+      }},
     );
     return updatedLaunch;
   }

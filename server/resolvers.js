@@ -12,7 +12,7 @@ module.exports = {
     
     Mutation: {
       editLaunch: async (_, { id, input }, { dataSources: {allLaunches} }) => {
-        const updatedLaunch = await allLaunches.editLaunch({id, input}); 
+        const updatedLaunch = await allLaunches.editLaunch(id, input); 
         return updatedLaunch;
       }
       },
