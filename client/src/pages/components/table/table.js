@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
-
+import Modal from '../modal/modal'
 import './table.css';
 
 export default function Table(props) {
     const {launches} = props;
+        
+    const [ showModal, setShowModal ] = useState(false);
+    const [ currentLaunch, setCurrentLaunch ] = useState({});
+
+    const toogleModal = (item) => {
+        if (showModal) {
+            setShowModal(false);
+            setCurrentLaunch({})
+        } else {
+            setShowModal(true);
+            setCurrentLaunch(item)
+        }
+    }
     return (
         <>
             <section className="table-container">
@@ -45,7 +58,7 @@ export default function Table(props) {
                                     {launch.flight_number}
                                 </td>
                                 <td className="actions">
-                                    <button href="?" className="edit-item" title="Edit">Edit</button>
+                                    <button onClick={() => toogleModal(launch)} href="?" className="edit-item-button" title="Edit">Edit {launch.name}</button>
                                 </td>
                             </tr>
                             )
@@ -53,7 +66,9 @@ export default function Table(props) {
                         })}
                     </tbody>
                 </table>
+                <Modal show={showModal} onClose={() => toogleModal()} currentLaunch={currentLaunch}/>
             </section>
+
         </>
     )
 }

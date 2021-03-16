@@ -27,4 +27,19 @@ table.display td {
     background: #fff; 
 }
 
+.edit-item-button{
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #eee;
+    font-weight: bold;
+    min-width: 150px;
+}
+
+.edit-item-button:hover{
+    color: #fff;
+    background-color: #159692;
+    cursor: pointer;
+}
   
