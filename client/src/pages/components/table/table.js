@@ -5,11 +5,10 @@ import './table.css';
 
 export default function Table(props) {
     const {launches} = props;
-        
     const [ showModal, setShowModal ] = useState(false);
     const [ currentLaunch, setCurrentLaunch ] = useState({});
 
-    const toogleModal = (item) => {
+     const toogleModal = (item) => {
         if (showModal) {
             setShowModal(false);
             setCurrentLaunch({})
