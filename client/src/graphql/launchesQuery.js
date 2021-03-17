@@ -15,28 +15,15 @@ export const GET_ALL_LAUNCHES = gql`
 `;
 
 export const EDIT_LAUNCH = gql`
-    mutation editLaunch(
-        # $id: ID!
-        $details: String
-        $flight_number: Int!
-        $name: String!
-        $success: Boolean
-        $upcoming: Boolean
-    ) {
+    mutation editLaunch($id: ID!, $input: editedLaunchInput) {
         editLaunch(
-            # id: $id
-            input: {
-                details: $details
-                flight_number: $flight_number
-                name: $name
-                success: $success
-                upcoming: $upcoming  
-            }
+            id: $id
+            input: $input
         ) {
-            # date_utc
+            date_utc
             details
             flight_number
-            # id
+            id
             name
             success
             upcoming

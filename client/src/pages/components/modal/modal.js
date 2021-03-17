@@ -35,12 +35,14 @@ const toogleUpcomingChecked = () => {
 const handleSubmit = (event) => {
     editLaunch({
         variables: {
-            // id: currentLaunch.id,
-            details: currentLaunch.details,
-            flight_number: currentLaunch.flightNumber,
-            name: currentLaunch.name,
-            success: currentLaunch.success,
-            upcoming: currentLaunch.upcoming,
+            id: currentLaunch.id,
+            input:{
+                details: currentLaunch.details,
+                flight_number: currentLaunch.flightNumber,
+                name: currentLaunch.name,
+                success: currentLaunch.success,
+                upcoming: currentLaunch.upcoming,
+            }
         }
     })
     console.log("launch name: ", launchName, "flight number: ", flightNumber, "details: ", details, "success: ", success, "upcoming: ", upcoming);
