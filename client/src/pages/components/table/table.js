@@ -2,26 +2,27 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import Modal from '../modal/modal'
 import './table.css';
-
+//oddzielać importy
 export default function Table(props) {
     const {launches} = props;
-    const [ showModal, setShowModal ] = useState(false);
-    const [ currentLaunch, setCurrentLaunch ] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [currentLaunch, setCurrentLaunch] = useState({});
 
+    //show/close Modal a nie toggle modal i literówka
      const toogleModal = (item) => {
         if (showModal) {
             setShowModal(false);
-            setCurrentLaunch({})
+            setCurrentLaunch({});
         } else {
             setShowModal(true);
-            setCurrentLaunch(item)
+            setCurrentLaunch(item);
         }
     }
+                    //style BEM, nazwy komponentów nazywane od nazw komponentów, zwróć uwagę na konwencje nazewnictwa - znaki oddzielające "Table__table", screen ze slacka
+                    //modal na górę, przed section, ale poza section
     return (
-        <>
-            <section className="table-container">
+            <section className="table-container Table__table">
                 <h1>Table below presents all SpaceX launches</h1>
-
                 <table className="layout display responsive-table">
                     <thead>
                         <tr>
@@ -51,13 +52,19 @@ export default function Table(props) {
                                     {moment(launch.date_utc).format("dddd, MMMM Do YYYY")}
                                 </td>
                                 <td className="organisationnumber">
-                                    {launch.upcomming ? "Uocomming" : "Recent"}
+                                    {launch.upcoming ? "Upcomming" : "Recent"}
                                 </td>
                                 <td className="organisationnumber">
                                     {launch.flight_number}
                                 </td>
                                 <td className="actions">
-                                    <button onClick={() => toogleModal(launch)} href="?" className="edit-item-button" title="Edit">Edit {launch.name}</button>
+                                    <button 
+                                        className="edit-item-button" 
+                                        onClick={() => toogleModal(launch)} 
+                                        title="Edit"
+                                        >
+                                            Edit {launch.name}
+                                    </button>
                                 </td>
                             </tr>
                             )
@@ -65,9 +72,7 @@ export default function Table(props) {
                         })}
                     </tbody>
                 </table>
-                <Modal show={showModal} onClose={() => toogleModal()} currentLaunch={currentLaunch}/>
+                <Modal show={showModal} onClose={toogleModal} currentLaunch={currentLaunch}/>
             </section>
-
-        </>
     )
 }

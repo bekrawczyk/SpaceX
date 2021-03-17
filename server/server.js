@@ -9,9 +9,11 @@ const typeDefs = require('./schema');
 
 const HOST = 'localhost';
 const PORT = 5000;
+//albo przenieść do config, tworzysz pliki .env => paczka environmentDotEnv npm 
 
-const client = new MongoClient(MONGODB,  { useUnifiedTopology: true })
-client.connect()
+const client = new MongoClient(MONGODB,  { useUnifiedTopology: true });
+client.connect();
+//clinet.connect() albo w bloku start server, albo w try...catch , gdy nie połączy się z bazą a sam serwer wystartuje
 
 async function startServer() {
   const server = new ApolloServer({ 
@@ -22,6 +24,7 @@ async function startServer() {
         allLaunches: Launches(client.db().collection('launches'))
       }
     },
+    //lub zdj ze slacka
   });
 
   const app = new Hapi.server({

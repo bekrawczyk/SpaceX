@@ -3,9 +3,11 @@ module.exports = {
       getAllLaunches: async (_, __, { dataSources: {allLaunches} }) => {
         try {
           const launches = await allLaunches.getAllLaunches();
-          return launches
-        } catch(err){
-          throw new Error(err)
+          return launches;
+
+          // lub return await allLaunches.getAllLaunches();
+        } catch(err) {
+          throw new Error(err);
         }
       }
     },
@@ -18,4 +20,5 @@ module.exports = {
       },
 
       //tu wywołanie mutacji, query itp, nie wrzucać logiki - usumąć try...catch
+      //sprawdzić konwencję kiedy łapie się błędy - resolver czy osobne pliki (tu launches.js)
   };

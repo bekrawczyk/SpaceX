@@ -18,6 +18,7 @@ export default function Home() {
             <p>Error :(</p>
         );
     }
+//ify do bloku return 
 
     return(
         <>
@@ -27,7 +28,6 @@ export default function Home() {
                 ? <Table launches={data}/> 
                 : <p>No data to display</p>
             }
-
         </>
     );
 }
