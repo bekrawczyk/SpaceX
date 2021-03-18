@@ -15,7 +15,7 @@ export const GET_ALL_LAUNCHES = gql`
 `;
 
 export const EDIT_LAUNCH = gql`
-    mutation editLaunch($id: ID!, $input: editedLaunchInput) {
+    mutation editLaunch($id: ID!, $input: EditedLaunchInput!) {
         editLaunch(
             id: $id
             input: $input

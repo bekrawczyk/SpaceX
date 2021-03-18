@@ -14,7 +14,9 @@ module.exports = {
     
     Mutation: {
       editLaunch: async (_, { id, input }, { dataSources: {allLaunches} }) => {
+        console.log("resolver:", id, input);
         const updatedLaunch = await allLaunches.editLaunch(id, input); 
+        console.log("updatedLaunch: ", updatedLaunch);
         return updatedLaunch;
       }
       },

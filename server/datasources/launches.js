@@ -20,8 +20,20 @@ const Launches = (mongoDbConnection) =>  {
         "upcoming": input.upcoming,
       }},
       //set wypełnić inputem = $set: input
+      //zrobić to ładniej, nie chcemy potworów frankensteina 
     );
-    return updatedLaunch;
+
+    const editedLaunchInput = {
+      date_utc: updatedLaunch.value.date_utc,
+      details: updatedLaunch.value.details, 
+      flight_number: updatedLaunch.value.flight_number,
+      id: updatedLaunch.value.id,
+      name: updatedLaunch.value.name,
+      success: updatedLaunch.value.success,
+      upcoming: updatedLaunch.value.upcoming,
+    }
+
+    return editedLaunchInput;
   }
   //zmiana nazwy z input na launch lub newLaunch lub updatedLaunchData
 //tutaj logika, przenieść blok try-catch

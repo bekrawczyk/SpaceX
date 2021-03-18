@@ -6,48 +6,47 @@ import { EDIT_LAUNCH } from '../../../graphql/launchesQuery';
 import './modal.css'
 
 export default function Modal(props) {
-const { show, onClose, currentLaunch } = props;
-
-const [ editLaunch ] = useMutation(EDIT_LAUNCH);
+const { show, onClose, currentLaunch: {id, details, flight_number, name, success, upcoming} } = props;
 
 const [ launchName, setLaunchName ] = useState("");
-const [ flightNumber, setFlightNumber ] = useState("");
-const [ details, setDetails ] = useState("");
-const [ success, setSuccess ] = useState(false);
-const [ upcoming, setUpcoming ] = useState(false); 
+const [ launchFlightNumber, setLaunchFlightNumber ] = useState(0);
+const [ launchDetails, setLaunchDetails ] = useState("");
+const [ launchSuccess, setLaunchSuccess ] = useState(false);
+const [ launchUpcoming, setLaunchUpcoming ] = useState(false); 
 
 useEffect(() => {
-    setLaunchName(`${currentLaunch.name ? currentLaunch.name : ""}`);
-    setFlightNumber(`${currentLaunch.flight_number ? currentLaunch.flight_number : 0}`);
-    setDetails(`${currentLaunch.details ? currentLaunch.details : ""}`);
-    setSuccess(currentLaunch.success);
-    setUpcoming(currentLaunch.upcoming);
-}, [currentLaunch]);
+    setLaunchName(`${name ? name : ""}`);
+    setLaunchFlightNumber(flight_number);
+    setLaunchDetails(`${details ? details : ""}`);
+    setLaunchSuccess(success);
+    setLaunchUpcoming(upcoming);
+}, [details, flight_number, name, success, upcoming]);
 
 const toogleSuccessChecked = () => {
-    setSuccess(!success);
+    setLaunchSuccess(!launchSuccess);
 };
 
 const toogleUpcomingChecked = () => {
-    setUpcoming(!upcoming);
+    setLaunchUpcoming(!launchUpcoming);
 }
+const [ editLaunch ] = useMutation(EDIT_LAUNCH);
 
-const handleSubmit = (event) => {
-    editLaunch({
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const editedLaunch = await editLaunch({
         variables: {
-            id: currentLaunch.id,
-            input:{
-                details: currentLaunch.details,
-                flight_number: currentLaunch.flightNumber,
-                name: currentLaunch.name,
-                success: currentLaunch.success,
-                upcoming: currentLaunch.upcoming,
+            id,
+            input: {
+                details: launchDetails, 
+                flight_number: launchFlightNumber, 
+                name: launchName, 
+                success: launchSuccess, 
+                upcoming: launchUpcoming
             }
         }
-    })
-    console.log("launch name: ", launchName, "flight number: ", flightNumber, "details: ", details, "success: ", success, "upcoming: ", upcoming);
+    });
+    console.log(editedLaunch);
 //zmodyfikować oryginalne handlesubmit podając swoje argumenty
-    event.preventDefault();
   }
 
   //funkcja onSubmit - form lub button, jak button to mam kontrolę nad tym co się dzieje, formularz ma swoje domyślne zachowanie, 
@@ -82,8 +81,8 @@ if(!show) {
                                 <input 
                                     type="text" 
                                     name="flightNumber" 
-                                    value={flightNumber}
-                                    onChange={(e) => setFlightNumber(e.target.value)}
+                                    value={launchFlightNumber}
+                                    onChange={(e) => setLaunchFlightNumber(parseInt(e.target.value))}
                                 />                                
                             </section>
 
@@ -94,8 +93,8 @@ if(!show) {
                                 <input 
                                     type="text" 
                                     name="details" 
-                                    value={details}
-                                    onChange={(e) => setDetails(e.target.value)}
+                                    value={launchDetails}
+                                    onChange={(e) => setLaunchDetails(e.target.value)}
                                 />                                
                             </section>
 
@@ -104,11 +103,12 @@ if(!show) {
                                     Result of this launch (check if was succed): 
                                 </label>
                                 <input 
+                                    className="success-checkbox"
                                     type="checkbox" 
                                     name="success" 
-                                    checked={success} 
-                                    onClick={() => toogleSuccessChecked()}
-                                    onChange={(e) => setSuccess(e.target.value)}
+                                    checked={launchSuccess}
+                                    onClick={toogleSuccessChecked}
+                                    onChange={(e) => setLaunchSuccess(e.target.checked)}
                                 />                                
                             </section>
 
@@ -119,15 +119,15 @@ if(!show) {
                                 <input 
                                     type="checkbox" 
                                     name="upcoming" 
-                                    checked={upcoming} 
+                                    checked={launchUpcoming} 
                                     onClick={() => toogleUpcomingChecked()}
-                                    onChange={(e) => setUpcoming(e.target.value)}
+                                    onChange={(e) => setLaunchUpcoming(e.target.checked)}
                                 />                                
-                            </section>
+                            </section> 
 
                             <section className="content modal-footer">
                                 <button className="button close-button" onClick={onClose}>Close window</button>
-                                <button className="button save-button" type="submit">Save changes</button>
+                                <button className="button save-button" type="submit" form="launchForm">Save changes</button>
                             </section>
                         </form>
                     </section>

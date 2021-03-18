@@ -11,7 +11,7 @@ const schema = gql`
         upcoming: Boolean!
     },
 
-    input editedLaunchInput {
+    input EditedLaunchInput {
         details: String
         flight_number: Int!
         name: String!
@@ -24,7 +24,7 @@ const schema = gql`
     },
 
     type Mutation {
-        editLaunch(id: ID!, input: editedLaunchInput!): Launch!
+        editLaunch(id: ID!, input: EditedLaunchInput!): Launch!
     }
 `;
 
