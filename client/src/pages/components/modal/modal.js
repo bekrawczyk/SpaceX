@@ -1,75 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation } from '@apollo/client';
-
-import { EDIT_LAUNCH, ADD_LAUNCH } from '../../../graphql/launchesQuery';
+import React, { useState } from 'react';
 
 import './modal.css'
 
 export default function Modal(props) {
-const { show, onClose, currentLaunch: {_id, details, flight_number, name, success, upcoming} } = props;
 
-const [ launchName, setLaunchName ] = useState("");
-const [ launchFlightNumber, setLaunchFlightNumber ] = useState(0);
-const [ launchDetails, setLaunchDetails ] = useState("");
-const [ launchSuccess, setLaunchSuccess ] = useState(false);
-const [ launchUpcoming, setLaunchUpcoming ] = useState(false); 
+const { 
+    onClose, 
+    currentLaunch: { 
+        details, 
+        flight_number, 
+        name, 
+        success, 
+        upcoming
+    },
+} = props;
 
-useEffect(() => {
-    setLaunchName(`${name ? name : ""}`);
-    setLaunchFlightNumber(flight_number);
-    setLaunchDetails(`${details ? details : ""}`);
-    setLaunchSuccess(success);
-    setLaunchUpcoming(upcoming);
-}, [details, flight_number, name, success, upcoming]);
+const [launchName, setLaunchName] = useState(name);
+const [launchFlightNumber, setLaunchFlightNumber] = useState(flight_number);
+const [launchDetails, setLaunchDetails] = useState(details);
+const [launchSuccess, setLaunchSuccess] = useState(success);
+const [launchUpcoming, setLaunchUpcoming] = useState(upcoming); 
 
-const toogleSuccessChecked = () => {
+const toggleSuccessChecked = () => {
     setLaunchSuccess(!launchSuccess);
 };
-const toogleUpcomingChecked = () => {
+const toggleUpcomingChecked = () => {
     setLaunchUpcoming(!launchUpcoming);
 }
-const [ editLaunch ] = useMutation(EDIT_LAUNCH);
-const [ addLaunch ] = useMutation(ADD_LAUNCH);
+// const [ editLaunch ] = useMutation(EDIT_LAUNCH);
+// const [ addLaunch ] = useMutation(ADD_LAUNCH);
 
 const handleSubmit = async (event) => {
+    //zmodyfikować oryginalne handlesubmit podając swoje argumenty
+    //funkcja onSubmit - form lub button, jak button to mam kontrolę nad tym co się dzieje, formularz ma swoje domyślne zachowanie, 
+
     event.preventDefault();
-//     await editLaunch({
-//             variables: {
-//                 _id,
-//                 input: {
-//                     details: launchDetails, 
-//                     flight_number: launchFlightNumber, 
-//                     name: launchName, 
-//                     success: launchSuccess, 
-//                     upcoming: launchUpcoming
-//                 }
-//             }
-//         })
+    console.log(    
+                "details: ", launchDetails, 
+                "flight_number: ", launchFlightNumber, 
+                "name: ", launchName, 
+                "success: ", launchSuccess, 
+                "upcoming: ", launchUpcoming
+    )
+    // await editLaunch({
+    //         variables: {
+    //             _id,
+    //             input: {
+    //                 details: launchDetails, 
+    //                 flight_number: launchFlightNumber, 
+    //                 name: launchName, 
+    //                 success: launchSuccess, 
+    //                 upcoming: launchUpcoming
+    //             }
+    //         }
+    //     })
 
-    const addedLaunch = await addLaunch({
-        variables: {
-            input: {
-                date_utc: new Date().toISOString(),
-                details: launchDetails, 
-                flight_number: launchFlightNumber, 
-                name: launchName, 
-                success: launchSuccess, 
-                upcoming: launchUpcoming
-            }
-        }
-    });
-    console.log("addedLaunch: ", addedLaunch);
-
-// //zmodyfikować oryginalne handlesubmit podając swoje argumenty
+    // await addLaunch({
+    //     variables: {
+    //         input: {
+    //             date_utc: new Date().toISOString(),
+    //             details: launchDetails, 
+    //             flight_number: launchFlightNumber, 
+    //             name: launchName, 
+    //             success: launchSuccess, 
+    //             upcoming: launchUpcoming
+    //         }
+    //     }
+    // });
   }
 
-  //funkcja onSubmit - form lub button, jak button to mam kontrolę nad tym co się dzieje, formularz ma swoje domyślne zachowanie, 
-if(!show) {
-    return null;
-}
-
     return (
-        <>
             <div className="modal-container">
                 <div className="modal-content">
                     <h1>Modal header</h1>
@@ -84,7 +84,7 @@ if(!show) {
                                     type="text" 
                                     name="launchName"
                                     value={launchName} 
-                                    onChange={(e) => setLaunchName(e.target.value)}
+                                    onChange={(e) => setLaunchName(e.target.value).toString()}
                                 />
                             </section>
                             
@@ -108,7 +108,7 @@ if(!show) {
                                     type="text" 
                                     name="details" 
                                     value={launchDetails}
-                                    onChange={(e) => setLaunchDetails(e.target.value)}
+                                    onChange={(e) => setLaunchDetails(e.target.value).toString()}
                                 />                                
                             </section>
 
@@ -121,7 +121,7 @@ if(!show) {
                                     type="checkbox" 
                                     name="success" 
                                     checked={launchSuccess}
-                                    onClick={toogleSuccessChecked}
+                                    onClick={toggleSuccessChecked}
                                     onChange={(e) => setLaunchSuccess(e.target.checked)}
                                 />                                
                             </section>
@@ -134,7 +134,7 @@ if(!show) {
                                     type="checkbox" 
                                     name="upcoming" 
                                     checked={launchUpcoming} 
-                                    onClick={() => toogleUpcomingChecked()}
+                                    onClick={toggleUpcomingChecked}
                                     onChange={(e) => setLaunchUpcoming(e.target.checked)}
                                 />                                
                             </section> 
@@ -147,6 +147,5 @@ if(!show) {
                     </section>
                 </div>
             </div>
-        </>
     )
 }

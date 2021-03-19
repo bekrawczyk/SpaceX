@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import moment from 'moment';
-import Modal from '../modal/modal'
+
+import { EDIT_LAUNCH, ADD_LAUNCH } from '../../../graphql/launchesQuery';
+import Modal from '../modal/modal';
+
 import './table.css';
-//oddzielać importy
+
 export default function Table(props) {
     const {launches} = props;
+    const [editLaunch] = useMutation(EDIT_LAUNCH);
+    const [addLaunch] = useMutation(ADD_LAUNCH);
     const [showModal, setShowModal] = useState(false);
+    // const [mutation, setMutation] = useState()
     const [currentLaunch, setCurrentLaunch] = useState(
         {
             date_utc: "",
@@ -18,8 +25,7 @@ export default function Table(props) {
         }
     );
 
-    //show/close Modal a nie toggle modal i literówka
-     const toogleModal = (item) => {
+    const toggleModalApperance = (item) => {
         if (showModal) {
             setShowModal(false);
             setCurrentLaunch({});
@@ -29,15 +35,22 @@ export default function Table(props) {
         }
     }
 
-    
-                    //style BEM, nazwy komponentów nazywane od nazw komponentów, zwróć uwagę na konwencje nazewnictwa - znaki oddzielające "Table__table", screen ze slacka
-                    //modal na górę, przed section, ale poza section
+        //style BEM, nazwy komponentów nazywane od nazw komponentów, zwróć uwagę na konwencje nazewnictwa - znaki oddzielające "Table__table", screen ze slacka
     return (
+        <> 
+            { 
+                showModal && 
+                <Modal 
+                    onClose={toggleModalApperance} 
+                    currentLaunch={currentLaunch}
+                />
+            }
+            
             <section className="table-container Table__table">
                 <h1>Table below presents all SpaceX launches</h1>
                 <button 
                     className="add-item-button button" 
-                    onClick={() => toogleModal(currentLaunch)} 
+                    onClick={() => toggleModalApperance(currentLaunch)} 
                     title="add"
                 >
                     Add new launch
@@ -79,7 +92,7 @@ export default function Table(props) {
                                 <td className="actions">
                                     <button 
                                         className="edit-item-button button" 
-                                        onClick={() => toogleModal(launch)} 
+                                        onClick={() => toggleModalApperance(launch)} 
                                         title="Edit"
                                         >
                                             Edit {launch.name}
@@ -91,7 +104,7 @@ export default function Table(props) {
                         })}
                     </tbody>
                 </table>
-                <Modal show={showModal} onClose={toogleModal} currentLaunch={currentLaunch}/>
             </section>
+        </>
     )
 }
