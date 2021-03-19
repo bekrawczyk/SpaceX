@@ -13,12 +13,17 @@ module.exports = {
     },
     
     Mutation: {
-      editLaunch: async (_, { id, input }, { dataSources: {allLaunches} }) => {
-        console.log("resolver:", id, input);
-        const updatedLaunch = await allLaunches.editLaunch(id, input); 
-        console.log("updatedLaunch: ", updatedLaunch);
+      editLaunch: async (_, { _id, input }, { dataSources: { allLaunches } }) => {
+        const updatedLaunch = await allLaunches.editLaunch(_id, input); 
         return updatedLaunch;
+      }, 
+
+      addLaunch: async (_, { input }, { dataSources: { allLaunches } }) => {
+        console.log("resolver: ", input)
+        const newLaunch = await allLaunches.addLaunch(input);
+        return newLaunch;
       }
+
       },
 
       //tu wywołanie mutacji, query itp, nie wrzucać logiki - usumąć try...catch

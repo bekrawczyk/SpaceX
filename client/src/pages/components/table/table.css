@@ -27,7 +27,7 @@ table.display td {
     background: #fff; 
 }
 
-.edit-item-button{
+.button{
     margin: 10px;
     padding: 10px;
     border: none;
@@ -37,7 +37,7 @@ table.display td {
     min-width: 150px;
 }
 
-.edit-item-button:hover{
+.button:hover{
     color: #fff;
     background-color: #159692;
     cursor: pointer;

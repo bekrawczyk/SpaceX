@@ -5,7 +5,7 @@ const schema = gql`
         date_utc: String
         details: String
         flight_number: Int!
-        id: ID!
+        _id: ID!
         name: String!
         success: Boolean
         upcoming: Boolean!
@@ -19,12 +19,22 @@ const schema = gql`
         upcoming: Boolean
     }
 
+    input NewLaunchInput {
+        date_utc: String
+        details: String
+        flight_number: Int!
+        name: String!
+        success: Boolean
+        upcoming: Boolean
+    }
+
     type Query {
         getAllLaunches: [Launch]!
     },
 
     type Mutation {
-        editLaunch(id: ID!, input: EditedLaunchInput!): Launch!
+        editLaunch(_id: ID!, input: EditedLaunchInput!): Launch!
+        addLaunch(input: NewLaunchInput!): Launch!
     }
 `;
 

@@ -9,9 +9,9 @@ const Launches = (mongoDbConnection) =>  {
   }
 //oprócz value jeszcze status powodzenia operacji, komunikaty/ zachowania aplikacji 
 
-  async function editLaunch(id, input) {
+  async function editLaunch(_id, input) {
     const updatedLaunch = await mongoDbConnection.findOneAndUpdate(
-      { id },
+      { _id },
       { $set: {
         "details": input.details, 
         "flight_number": input.flight_number,
@@ -27,7 +27,7 @@ const Launches = (mongoDbConnection) =>  {
       date_utc: updatedLaunch.value.date_utc,
       details: updatedLaunch.value.details, 
       flight_number: updatedLaunch.value.flight_number,
-      id: updatedLaunch.value.id,
+      _id: updatedLaunch.value._id,
       name: updatedLaunch.value.name,
       success: updatedLaunch.value.success,
       upcoming: updatedLaunch.value.upcoming,
@@ -37,11 +37,36 @@ const Launches = (mongoDbConnection) =>  {
   }
   //zmiana nazwy z input na launch lub newLaunch lub updatedLaunchData
 //tutaj logika, przenieść blok try-catch
-
+  async function addLaunch(input) {
+    console.log("before: ", input)
+    const addedLaunch = await mongoDbConnection.insertOne(
+      {
+        date_utc: input.date_utc,
+        details: input.details, 
+        flight_number: input.flight_number,
+        name: input.name,
+        success: input.success,
+        upcoming: input.upcoming,
+      }
+    );
+      console.log("addedLaunch:" , addedLaunch)
+    const newLaunchInput = {
+      date_utc: addedLaunch.ops[0].date_utc,
+      details: addedLaunch.ops[0].details, 
+      flight_number: addedLaunch.ops[0].flight_number,
+      _id: addedLaunch.ops[0]._id,
+      name: addedLaunch.ops[0].name,
+      success: addedLaunch.ops[0].success,
+      upcoming: addedLaunch.ops[0].upcoming,
+    };
+    console.log("after: ", newLaunchInput);
+    return newLaunchInput;
+  }
 
   return {
     getAllLaunches,
-    editLaunch
+    editLaunch,
+    addLaunch,
   }
 }
 
