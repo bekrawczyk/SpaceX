@@ -17,7 +17,7 @@ const schema = gql`
         name: String!
         success: Boolean
         upcoming: Boolean
-    }
+    },
 
     input NewLaunchInput {
         date_utc: String
@@ -26,7 +26,7 @@ const schema = gql`
         name: String!
         success: Boolean
         upcoming: Boolean
-    }
+    },
 
     type Query {
         getAllLaunches: [Launch]!

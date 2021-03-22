@@ -3,16 +3,23 @@ import { gql } from '@apollo/client';
 export const GET_ALL_LAUNCHES = gql`
     query getAllLaunches {
         getAllLaunches {
-            date_utc
-            details 
-            flight_number 
-            _id 
-            name 
-            success 
-            upcoming
+            ...basicInformation
         }
+    },
+
+    fragment basicInformation on Launch {
+        date_utc
+        details 
+        flight_number 
+        _id 
+        name 
+        success 
+        upcoming
     }
 `;
+
+
+
 
 export const EDIT_LAUNCH = gql`
     mutation editLaunch($_id: ID!, $input: EditedLaunchInput!) {
