@@ -92,7 +92,6 @@ export default function Table(props) {
                                     <button 
                                         className="edit-item-button button" 
                                         onClick={() => openModalInMode(launch, true)}
-                                        launch
                                         title="Edit"
                                         >
                                             Edit {launch.name}
