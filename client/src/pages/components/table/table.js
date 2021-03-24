@@ -22,7 +22,6 @@ export default function Table(props) {
     );
 
     const openModalInMode = (launch, editMode) => {
-        console.log(launch, editMode)
         if (editMode) {
             setCurrentLaunch(launch);
             setIsModalEdit(true);

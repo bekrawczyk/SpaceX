@@ -19,7 +19,6 @@ module.exports = {
       }, 
 
       addLaunch: async (_, { input }, { dataSources: { allLaunches } }) => {
-        console.log("resolver: ", input)
         const newLaunch = await allLaunches.addLaunch(input);
         return newLaunch;
       }

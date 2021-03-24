@@ -38,7 +38,6 @@ const Launches = (mongoDbConnection) =>  {
   //zmiana nazwy z input na launch lub newLaunch lub updatedLaunchData
 //tutaj logika, przenieść blok try-catch
   async function addLaunch(input) {
-    console.log("before: ", input)
     const addedLaunch = await mongoDbConnection.insertOne(
       {
         date_utc: input.date_utc,
@@ -49,7 +48,6 @@ const Launches = (mongoDbConnection) =>  {
         upcoming: input.upcoming,
       }
     );
-      console.log("addedLaunch:" , addedLaunch)
     const newLaunchInput = {
       date_utc: addedLaunch.ops[0].date_utc,
       details: addedLaunch.ops[0].details, 
@@ -59,7 +57,6 @@ const Launches = (mongoDbConnection) =>  {
       success: addedLaunch.ops[0].success,
       upcoming: addedLaunch.ops[0].upcoming,
     };
-    console.log("after: ", newLaunchInput);
     return newLaunchInput;
   }
 
