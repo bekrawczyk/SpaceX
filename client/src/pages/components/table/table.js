@@ -66,9 +66,9 @@ export default function Table(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        {launches && launches.getAllLaunches.map((launch) => {
+                        {launches && launches.getAllLaunches.map((launch, id) => {
                             return (
-                            <tr key={launch._id}>
+                            <tr key={id}>
                                 <td className="launch-name table-cell">
                                     {launch.name}
                                 </td>

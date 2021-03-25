@@ -1,83 +1,103 @@
 import React from 'react';
-import { act, cleanup } from '@testing-library/react';
-
-import Enzyme, { mount, render, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render, act } from '@testing-library/react';
 import { MockedProvider } from '@apollo/client/testing';
 
-import Home from './home';
 import { GET_ALL_LAUNCHES } from '../graphql/launchesQuery';
+import Home from './home';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const mocks = [
+const mockedLaunch = [
     {
-        request: 
-            {
-                query: GET_ALL_LAUNCHES,
-            },
-        result: 
-            {
-                data: 
+        request: {
+            query: GET_ALL_LAUNCHES,
+        },
+        result: {
+            data: {
+                getAllLaunches: [
                     {
-                        getAllLaunches: [
-                            {
-                                date_utc: "2021-03-22T08:37:30.571Z",
-                                details: "delele",
-                                flight_number: 4,
-                                name: "New Launch2",
-                                success: true,
-                                upcoming: false,
-                                __typename: "Launch",
-                                _id: "6058574ad37c18995f1f1715",
-                            }
-                        ]
-                    }
-            }
+                        date_utc: "2021-06-22T08:37:30.571Z",
+                        details: "Some details",
+                        flight_number: 4,
+                        name: "New Launch2",
+                        success: true,
+                        upcoming: false,
+                        _id: "6058574ad37c18995f1f1715",
+                    },
+                ]
+            },
+        },
     },
 ]; 
 
+const emptyMock = [
+    {
+        request: {
+            query: GET_ALL_LAUNCHES,
+        },
+        result: {
+            data: []
+        }
+    }
+];
+
 const errorMock = [
     {
-        request: 
-            {
-                query: GET_ALL_LAUNCHES,
-            },
-        error: new Error('')
-    },
+        request: {
+            query: GET_ALL_LAUNCHES,
+        },
+        error: new Error(''),
+    }
 ];
 
 describe('Home', () => {
-
-    it('should render the home page with data', async () => {
-        
-        const wrapper = mount(
-            <MockedProvider mocks={mocks}>
+    it('render "Loading..." while waiting for data from server', () => {
+        const { getByText } = render(
+            <MockedProvider mocks={mockedLaunch} addTypename={false}>
                 <Home/>
             </MockedProvider>
         );
 
-        await act( async () => {
-            await new Promise(resolve => setTimeout(resolve, 0));
-            const table = wrapper.find('.Table__table');
-            console.log("table: ", table.debug())
-            const launchName = wrapper.find('.launch-name')
-            expect(table.length).toBe(1);
-            expect(launchName.length).toBe(1);
-        })
+        expect(getByText("Loading...")).toBeInTheDocument();
     });
 
-    it('should render error message', async () => {
-        const wrapper = mount(
-            <MockedProvider mocks={errorMock}>
+    it('render table with data', async () => {
+        const { getByText } = render(
+            <MockedProvider mocks={mockedLaunch} addTypename={false}>
                 <Home/>
             </MockedProvider>
         );
 
-        await act(async () => {
-            await new Promise(resolve => setTimeout(resolve, 0));
-            const errorMessage = wrapper.find('p');
-            expect(errorMessage.text()).toBe('Error :(');
-        })
-    })
+        await act(() => {
+            return new Promise(resolve => setTimeout(resolve, 0));
+        });
+
+        expect(getByText("Table below presents all SpaceX launches")).toBeInTheDocument();
+    });
+
+    it('returns "There is no data" paragraph when there is no data to display', async () => {
+        const { getByText } = render(
+            <MockedProvider mocks={emptyMock} addTypename={false}>
+                <Home/>
+            </MockedProvider>
+        );
+
+        await act(() => {
+            return new Promise(resolve => setTimeout(resolve, 0));
+        });
+
+        expect(getByText("No data to display")).toBeInTheDocument();
+    });
+
+    it('returns "Error" paragraph when any error occurs', async () => {
+        const { getByText } = render(
+            <MockedProvider mocks={errorMock} addTypename={false}>
+                <Home/>
+            </MockedProvider>
+        );
+
+        await act(() => {
+            return new Promise(resolve => setTimeout(resolve, 0));
+        });
+
+        expect(getByText("Error :(")).toBeInTheDocument();
+    });
 })
